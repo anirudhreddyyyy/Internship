@@ -1,17 +1,120 @@
-import sys
 
-def read_md_file(file_path):
+import re
+import requests
+
+
+def count_words(content):
+    # Removing code blocks
+    content_no_code = re.sub(r'```[\s\S]*?```', '', content)
+    content_no_code = re.sub(r'`[^`]+`', '', content_no_code)
+    
+    # Removing markdown
+    content_clean = re.sub(r'[#*_\[\]()!]', ' ', content_no_code)
+    
+    # Counting words
+    words = content_clean.split()
+    return len(words)
+
+
+def count_headings(content):
+    headings = {'h1': 0, 'h2': 0, 'h3': 0, 'h4': 0, 'h5': 0, 'h6': 0}
+    
+    heading_pattern = r'^(#{1,6})\s+.+$'
+    matches = re.finditer(heading_pattern, content, re.MULTILINE)
+    
+    for match in matches:
+        level = len(match.group(1))
+        headings[f'h{level}'] += 1
+    
+    return headings
+
+
+def extract_links(content):
+    links = []
+    link_pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+    matches = re.finditer(link_pattern, content)
+    
+    for match in matches:
+        links.append({
+            'text': match.group(1),
+            'url': match.group(2)
+        })
+    
+    return links
+
+
+def extract_images(content):
+    images = []
+    image_pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
+    matches = re.finditer(image_pattern, content)
+    
+    for match in matches:
+        images.append({
+            'alt': match.group(1),
+            'url': match.group(2)
+        })
+    
+    return images
+
+
+def validate_links(links):
+    broken_links = []
+    
+    for link in links:
+        url = link['url']
+        
+        # checking links
+        if url.startswith('#') or not url.startswith(('http://', 'https://')):
+            link['status'] = 'Skipped (local/anchor)'
+            continue
+        
+        try:
+            response = requests.head(url, timeout=5, allow_redirects=True)
+            if response.status_code < 400:
+                link['status'] = f'OK ({response.status_code})'
+            else:
+                link['status'] = f'Broken ({response.status_code})'
+                broken_links.append(link)
+        except requests.exceptions.Timeout:
+            link['status'] = 'Broken (Timeout)'
+            broken_links.append(link)
+        except Exception as e:
+            link['status'] = f'Broken ({type(e).__name__})'
+            broken_links.append(link)
+    
+    return broken_links
+
+
+
+def main():
+    # Reading markdown file
+    filename = input("Enter markdown file path: ")
+    
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read()
-            print(content)
+        with open(filename, 'r', encoding='utf-8') as f:
+            content = f.read()
     except FileNotFoundError:
-        print("Error: File not found.")
-    except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: File '{filename}' not found.")
+        return
+    
+    print(f"\nAnalyzing '{filename}'...\n")
+    
+    # Perform analysis
+    word_count = count_words(content)
+    headings = count_headings(content)
+    links = extract_links(content)
+    images = extract_images(content)
+    
+    # Validating links
+    print("Validating links...")
+    broken_links = validate_links(links)
+    
+    print()
+    print(word_count)
+    print(headings)
+    print(links)
+    print(images)
+    print(broken_links)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python read_md.py <file.md>")
-    else:
-        read_md_file(sys.argv[1])
+    main()
