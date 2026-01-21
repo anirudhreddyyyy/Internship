@@ -1,14 +1,14 @@
-
 import re
 import requests
 
 
 def count_words(content):
+    """Count words in markdown content, excluding code blocks."""
     # Removing code blocks
     content_no_code = re.sub(r'```[\s\S]*?```', '', content)
     content_no_code = re.sub(r'`[^`]+`', '', content_no_code)
     
-    # Removing markdown
+    # Removing markdown syntax
     content_clean = re.sub(r'[#*_\[\]()!]', ' ', content_no_code)
     
     # Counting words
@@ -85,9 +85,46 @@ def validate_links(links):
     return broken_links
 
 
+def generate_report(word_count, headings, links, images, broken_links):
+    print("=" * 60)
+    print("MARKDOWN ANALYSIS REPORT")
+    print("=" * 60)
+    print()
+    
+    # Words
+    print(f"📊 Words: {word_count}")
+    print()
+    
+    # Headings
+    total_headings = sum(headings.values())
+    print(f"📑 Headings: {total_headings}")
+    for level, count in headings.items():
+        if count > 0:
+            print(f"   {level.upper()}: {count}")
+    print()
+    
+    # Links
+    print(f"🔗 Links: {len(links)}")
+    print(f"   Broken: {len(broken_links)}")
+    if broken_links:
+        print("   Broken URLs:")
+        for link in broken_links:
+            print(f"      - {link['url']} ({link['status']})")
+    print()
+    
+    # Images
+    print(f"🖼️  Images: {len(images)}")
+    if images:
+        for img in images:
+            alt = img['alt'] if img['alt'] else '(no alt text)'
+            print(f"   - {alt}: {img['url']}")
+    print()
+    
+    print("=" * 60)
+
 
 def main():
-    # Reading markdown file
+    # Read the markdown file
     filename = input("Enter markdown file path: ")
     
     try:
@@ -99,7 +136,7 @@ def main():
     
     print(f"\nAnalyzing '{filename}'...\n")
     
-    # Perform analysis
+    # Perforing analysis
     word_count = count_words(content)
     headings = count_headings(content)
     links = extract_links(content)
@@ -109,12 +146,10 @@ def main():
     print("Validating links...")
     broken_links = validate_links(links)
     
+    # Generating report
     print()
-    print(word_count)
-    print(headings)
-    print(links)
-    print(images)
-    print(broken_links)
+    generate_report(word_count, headings, links, images, broken_links)
+
 
 if __name__ == "__main__":
     main()
