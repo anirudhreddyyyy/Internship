@@ -31,7 +31,7 @@ def count_headings(content):
 
 def extract_links(content):
     links = []
-    link_pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+    link_pattern = r'(?<!\!)\[([^\]]+)\]\(([^)]+)\)'
     matches = re.finditer(link_pattern, content)
     
     for match in matches:
@@ -124,7 +124,6 @@ def generate_report(word_count, headings, links, images, broken_links):
 
 
 def main():
-    # Read the markdown file
     filename = input("Enter markdown file path: ")
     
     try:
@@ -133,7 +132,11 @@ def main():
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found.")
         return
-    
+
+    if not content.strip():
+        print("⚠️ The markdown file is empty. Nothing to analyze.")
+        return
+
     print(f"\nAnalyzing '{filename}'...\n")
     
     # Perforing analysis
