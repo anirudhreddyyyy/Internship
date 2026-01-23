@@ -1,0 +1,6 @@
+# Python virtual environments
+venv/
+.env/
+.venv/
+env/
+markdown/mini_project_1/
