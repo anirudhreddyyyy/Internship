@@ -1,0 +1,98 @@
+[
+    {
+        "city": "hyderabad",
+        "temperature": 27.23,
+        "condition": "few clouds",
+        "time": "2026-01-27T12:37:05.169318"
+    },
+    {
+        "city": "hyderabad",
+        "temperature": 26.23,
+        "condition": "haze",
+        "time": "2026-01-28T10:56:05.073573"
+    },
+    {
+        "city": "bangalore",
+        "temperature": 25.83,
+        "condition": "broken clouds",
+        "time": "2026-01-28T12:21:26.068913"
+    },
+    {
+        "city": "goa",
+        "temperature": 26.21,
+        "condition": "clear sky",
+        "time": "2026-01-28T12:21:48.861304"
+    },
+    {
+        "city": "karnataka",
+        "temperature": 28.76,
+        "condition": "broken clouds",
+        "time": "2026-01-28T12:22:14.464108"
+    },
+    {
+        "city": "andhra pradesh",
+        "temperature": 27.65,
+        "condition": "clear sky",
+        "time": "2026-01-28T12:22:35.758931"
+    },
+    {
+        "city": "kolkata",
+        "temperature": 25.97,
+        "condition": "haze",
+        "time": "2026-01-28T12:22:58.644213"
+    },
+    {
+        "city": "zaheerabad",
+        "temperature": 17.77,
+        "condition": "clear sky",
+        "time": "2026-01-28T12:23:07.735062"
+    },
+    {
+        "city": "sainikpuri",
+        "temperature": 26.76,
+        "condition": "haze",
+        "time": "2026-01-28T12:23:18.802766"
+    },
+    {
+        "city": "kothaguda",
+        "temperature": 26.61,
+        "condition": "haze",
+        "time": "2026-01-28T12:23:25.956671"
+    },
+    {
+        "city": "delhi",
+        "temperature": 16.05,
+        "condition": "mist",
+        "time": "2026-01-28T12:48:00.730183"
+    },
+    {
+        "city": "kondapur",
+        "temperature": 27.67,
+        "condition": "few clouds",
+        "time": "2026-01-28T13:33:45.384930"
+    },
+    {
+        "city": "solapur",
+        "temperature": 30.2,
+        "condition": "clear sky",
+        "time": "2026-01-28T13:34:04.467782"
+    },
+    {
+        "city": "hyderabad",
+        "temperature": 28.23,
+        "condition": "haze",
+        "time": "2026-01-28T14:01:52.208152"
+    },
+    {
+        "city": "hyderabad",
+        "temperature": 25.73,
+        "condition": "haze",
+        "time": "2026-01-29T10:43:47.613991"
+    },
+    {
+        "city": "hyderabad",
+        "temperature": 27.23,
+        "condition": "haze",
+        "time": "2026-01-29T13:03:12.608299"
+    }
+]
