@@ -1,0 +1,8 @@
+{
+    "timeout": 5,
+    "max_redirects": 5,
+    "validate_images": false,
+    "generate_html": true,
+    "exclude_extensions": [],
+    "github_token": null
+}
