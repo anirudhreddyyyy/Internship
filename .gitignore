@@ -5,3 +5,5 @@ venv/
 env/
 markdown/mini_project_1/
 weather_dashboard_cli/.env
+weather_dashboard_cli/__pycache__/
+weather_dashboard_cli/*.pyc

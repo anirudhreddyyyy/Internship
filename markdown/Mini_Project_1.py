@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def load_config():
-    """Load configuration from config.json file."""
+    
     default_config = {
         'timeout': 5,
         'max_redirects': 5,
@@ -29,32 +29,31 @@ def load_config():
     
     return default_config
 
+def is_markdown_file(filename):
+    return filename.lower().endswith(".md")
 
 def count_words(content):
-    """Count words in markdown content, excluding code blocks."""
-    # Remove code blocks
-    content_no_code = re.sub(r'```[\s\S]*?```', '', content)
-    content_no_code = re.sub(r'`[^`]+`', '', content_no_code)
     
-    # Remove markdown syntax
-    content_clean = re.sub(r'[#*_\[\]()!]', ' ', content_no_code)
-    
-    # Count words
-    words = content_clean.split()
+    # Remove fenced code blocks
+    content = re.sub(r"```[\s\S]*?```", "", content)
+    # Remove inline code
+    content = re.sub(r"`[^`]+`", "", content)
+    # Remove links and images
+    content = re.sub(r"!\[.*?\]\(.*?\)", "", content)
+    content = re.sub(r"\[.*?\]\(.*?\)", "", content)
+    # Remove markdown symbols
+    content = re.sub(r"[#>*_]", " ", content)
+
+    words = content.split()
     return len(words)
 
-
 def count_headings(content):
-    """Count headings by level (h1-h6)."""
-    headings = {'h1': 0, 'h2': 0, 'h3': 0, 'h4': 0, 'h5': 0, 'h6': 0}
-    
-    heading_pattern = r'^(#{1,6})\s+.+$'
-    matches = re.finditer(heading_pattern, content, re.MULTILINE)
-    
-    for match in matches:
+    headings = {"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}
+
+    for match in re.finditer(r"^(#{1,6})\s+", content, re.MULTILINE):
         level = len(match.group(1))
-        headings[f'h{level}'] += 1
-    
+        headings[f"h{level}"] += 1
+
     return headings
 
 
@@ -412,7 +411,7 @@ def generate_html_report(filename, word_count, headings, links, images, broken_l
 
 
 def generate_report(word_count, headings, links, images, broken_links):
-    """Generate and print a summary report."""
+    
     print("=" * 60)
     print("MARKDOWN ANALYSIS REPORT")
     print("=" * 60)
@@ -451,7 +450,7 @@ def generate_report(word_count, headings, links, images, broken_links):
 
 
 def analyze_github_repo(repo_url, config):
-    """Analyze markdown files from a GitHub repository."""
+    
     try:
         # Extract owner and repo name from URL
         parts = repo_url.rstrip('/').split('/')
@@ -583,6 +582,12 @@ def main():
     else:
         # Local file analysis
         filename = input("Enter markdown file path: ").strip()
+
+        if not is_markdown_file(filename):
+            print("Error: Invalid file format. Only .md files are allowed.")
+            return
+
+
         
         try:
             with open(filename, 'r', encoding='utf-8') as f:
