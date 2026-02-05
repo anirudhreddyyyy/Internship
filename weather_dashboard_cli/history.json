@@ -94,5 +94,11 @@
         "temperature": 27.23,
         "condition": "haze",
         "time": "2026-01-29T13:03:12.608299"
+    },
+    {
+        "city": "hyderabad",
+        "temperature": 20.73,
+        "condition": "haze",
+        "time": "2026-02-05T23:43:37.686601"
     }
 ]
