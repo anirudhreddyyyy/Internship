@@ -1,0 +1,6 @@
+Flask
+Flask-SQLAlchemy
+pytest
+pytest-flask
+markdown
+PyPDF2
